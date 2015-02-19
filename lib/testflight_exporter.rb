@@ -52,8 +52,6 @@ module TestFlightExporter
 
       login_form.submit
 
-      # TODO menu item list with number reference and all times reference
-
       @agent.get("https://testflightapp.com/dashboard/applications/") do |dashboard_page|
 
         @dashboard_page = dashboard_page
@@ -90,7 +88,7 @@ module TestFlightExporter
         else
           # process current team
           puts ""
-          Helper.log.info "This could take a while... ☕️".green #TODO every time it is working! And new line!
+          Helper.log.info "This could take a while... ☕️".green
           Helper.log.info "Processing team: #{@current_team}".blue
 
           process_dashboard_page dashboard_page
@@ -104,7 +102,7 @@ module TestFlightExporter
       if process_all_teams
         # process current team
         puts ""
-        Helper.log.info "This could take a while... ☕️".green #TODO every time it is working! And new line!
+        Helper.log.info "This could take a while... ☕️".green
         Helper.log.info "Processing team: #{@current_team}".blue
 
         process_dashboard_page @dashboard_page
