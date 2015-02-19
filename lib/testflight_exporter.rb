@@ -12,7 +12,6 @@ module TestFlightExporter
 
     def initialize
       @agent = Mechanize.new
-      @current_team = String.new
       @team_list = Hash.new
     end
 
@@ -67,7 +66,7 @@ module TestFlightExporter
         end
 
         # If we don't have any current team something went wrong with the authentication process
-        if (@current_team.empty?)
+        if (@current_team.nil? || @current_team.text.empty?)
           Helper.exit_with_error "Something went wrong during authentication process."
         end
 
