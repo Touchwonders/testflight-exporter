@@ -39,5 +39,12 @@ module TestFlightExporter
       @@log
     end
 
+    # EXIT HANDLERS
+
+    # Print error text with error format and exit with in input error_code (default=1)
+    def self.exit_with_error (message, error_code=1)
+      log.error message.red
+      exit (error_code)
+    end
   end
 end
