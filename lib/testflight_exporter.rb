@@ -157,7 +157,8 @@ module TestFlightExporter
       dashboard_page.links.each do |link|
         link.href =~ app_link_pattern
         if $1 != nil
-          # Helper.log.info "Builds page for #{$1}..."
+          Helper.log.debug "Builds page for #{$1}...".magenta
+
           @agent.get "https://testflightapp.com/dashboard/applications/#{$1}/builds/" do |builds_page|
 
             # Collection of all pages for current build
