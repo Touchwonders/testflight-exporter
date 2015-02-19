@@ -202,16 +202,16 @@ module TestFlightExporter
       file_url = "https://www.testflightapp.com#{link.href}"
       puts "Downloading #{file_url}..." # DEBUG
 
-      dirname = File.dirname("out/#{@current_team}")
+      dirname = File.dirname("#{@path}/#{@current_team}")
 
       FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
 
-      dirname = File.dirname("out/#{@current_team}/#{@app_name}")
+      dirname = File.dirname("#{@path}/#{@current_team}/#{@app_name}")
 
       FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
 
-      @agent.get(file_url).save("out/#{@current_team}/#{@app_name}/#{filename}")
-      File.open("out/#{@current_team}/#{@app_name}/#{$1}.txt", 'w') {|f| f.write(release_note) }
+      @agent.get(file_url).save("#{@path}/#{@current_team}/#{@app_name}/#{filename}")
+      File.open("#{@path}/#{@current_team}/#{@app_name}/#{$1}.txt", 'w') {|f| f.write(release_note) }
     end
   end
 end
