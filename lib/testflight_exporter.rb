@@ -22,13 +22,14 @@ module TestFlightExporter
 
       @username = ask("Enter your TestFlight username:  ") { |q| q.echo = true }
       @password = ask("Enter your TestFlight password:  ") { |q| q.echo = "*" }
+      @path = ask("Enter your output folder where all the IPAs will be downloaded (absolute path):  "){ |q| q.echo = true }
 
-      #clean up
-      # TODO: do not remove the folder at all
-      #       If it is already there than quit with message (ERROR)
-
-      FileUtils.rm_rf "out"
-      Dir.mkdir "out"
+      # Validate ouput folder
+      if File.directory?(@path)
+        # The in input path already exist we prefer to fail instead of using overriding policies
+        Helper.exit_with_error "\"#{@path}\" is an existing directory. Please specify another output folder".red
+        return
+      end
 
       login_page_url = "https://testflightapp.com/login/"
 
@@ -39,7 +40,8 @@ module TestFlightExporter
 
     def process_login_page page
 
-      Helper.log.info 'Login...'.yellow
+      # Init login process
+      Helper.log.debug 'Login...'.yellow
 
       login_form = page.forms.first # by pretty printing the page this is safe catch
 
@@ -134,7 +136,7 @@ module TestFlightExporter
             end
 
             number_of_pages = inner_pages.count + 1
-            Helper.log.info "Page 1 of #{number_of_pages}".magenta # DEBUG
+            Helper.log.debug "Page 1 of #{number_of_pages}".magenta
             puts ""
 
             # Process current build page
@@ -144,7 +146,7 @@ module TestFlightExporter
             i = 2
             inner_pages.each do |page|
               puts ""
-              Helper.log.info "Page #{i} of #{number_of_pages}".magenta # DEBUG
+              Helper.log.debug "Page #{i} of #{number_of_pages}".magenta
 
               process_builds_page @agent.get "https://testflightapp.com#{page}"
 
@@ -179,14 +181,14 @@ module TestFlightExporter
       # we need to figure out what kind of build is that
       release_note = page.search('.clearfix').at("p").text
 
-      puts "RELEASE NOTE" # DEBUG
-      puts release_note # DEBUG
+      Helper.log.debug "RELEASE NOTE".magenta
+      Helper.log.debug release_note.magenta
 
       ipa_link = page.link_with(:text => "download the IPA.")
       ipa_link = page.link_with(:text => "download the IPA") if ipa_link.nil?
 
       if ipa_link.nil?
-        Helper.log.error "No IPA link found. Do you have permission for current application?".red
+        Helper.log.warn "No IPA link found. Do you have permission for current application?".yellow
       else
         download_build(ipa_link, "ipa", release_note)
       end
@@ -200,7 +202,7 @@ module TestFlightExporter
       filename = "#{$1}.#{file_ext}"
 
       file_url = "https://www.testflightapp.com#{link.href}"
-      puts "Downloading #{file_url}..." # DEBUG
+      Helper.log.debug "Downloading #{file_url}...".magenta
 
       dirname = File.dirname("#{@path}/#{@current_team}")
 
