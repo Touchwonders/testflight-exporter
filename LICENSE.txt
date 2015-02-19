@@ -1,4 +1,4 @@
-Copyright (c) 2015 Fabio Milano
+Copyright (c) 2015 Touchwonders B.V.
 
 MIT License
 
