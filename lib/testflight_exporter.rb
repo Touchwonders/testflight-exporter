@@ -33,9 +33,7 @@ module TestFlightExporter
 
       login_page_url = "https://testflightapp.com/login/"
 
-
       @agent.get(login_page_url) { |page| process_login_page page }
-
     end
 
     def process_login_page page
@@ -52,9 +50,6 @@ module TestFlightExporter
       password_field.value = @password
 
       login_form.submit
-
-      name = @username[/[^@]+/]
-      name.split(".").map {|n| n.capitalize }.join(" ")
 
       # TODO menu item list with number reference and all times reference
 
