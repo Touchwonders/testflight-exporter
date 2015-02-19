@@ -67,7 +67,7 @@ module TestFlightExporter
         end
 
         # If we don't have any current team something went wrong with the authentication process
-        if (@current_team.text.empty?)
+        if (@current_team.empty?)
           Helper.exit_with_error "Something went wrong during authentication process."
         end
 
