@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+
+$:.push File.expand_path("../lib", __FILE__)
+
+require 'commander'
+require 'highline'
+require_relative '../lib/testflight_exporter/version'
+require_relative '../lib/testflight_exporter'
+
+HighLine.track_eof = false
+
+
+class TestFlightExporterApplication
+  include Commander::Methods
+
+  def run
+    program :version, Osiris::VERSION
+    program :description, 'CLI for \'Test Flight Exporter\' - Migrate all your IPA automatically on your Mac'
+    program :help, 'Author', 'Fabio Milano'
+    program :help, 'Website', 'http://www.touchwonders.com'
+    program :help_formatter, :compact
+
+    always_trace!
+
+    command :migrate do |c|
+      c.syntax = 'tfexporter migrate'
+      c.description = 'Helps you setting up all requirements to run a migration.'
+
+      c.action do |args, options|
+        TestFlightExporter::Setup.new.setup
+      end
+    end
+
+    default_command :migrate
+
+    run!
+  end
+end
+
+TestFlightExporterApplication.new.run
