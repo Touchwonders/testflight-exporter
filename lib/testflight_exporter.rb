@@ -21,7 +21,7 @@ module TestFlightExporter
 
       @username = ask("Enter your TestFlight username:  ") { |q| q.echo = true }
       @password = ask("Enter your TestFlight password:  ") { |q| q.echo = "*" }
-      @path = ask("Enter your output folder where all the IPAs will be downloaded (absolute path):  "){ |q| q.echo = true }
+      @path = ask("Enter your output folder where all the IPAs will be downloaded:  "){ |q| q.echo = true }
 
       # Validate ouput folder
       if File.directory?(@path)
