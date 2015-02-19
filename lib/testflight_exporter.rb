@@ -31,6 +31,7 @@ module TestFlightExporter
         return
       end
 
+      # Initialize Test Flight login page
       login_page_url = "https://testflightapp.com/login/"
 
       @agent.get(login_page_url) { |page| process_login_page page }
@@ -57,7 +58,7 @@ module TestFlightExporter
 
         @dashboard_page = dashboard_page
 
-        dashboard_page.links.each do |ll|
+        @dashboard_page.links.each do |ll|
           # Retrieve current team
           if ll.attributes.attributes['class']
             @current_team = ll if ll.attributes.attributes['class'].text.eql? "dropdown-toggle team-menu"
@@ -67,52 +68,90 @@ module TestFlightExporter
           @team_list.merge!({ll.text=>ll.attributes['data-team-id']}) if ll.attributes['data-team-id']
         end
 
-        if (!response && required_team_name)
-          if @current_team.eql? required_team_name
-            # process current team
-            Helper.log.info "Processing team: #{@current_team}".blue
-
-            process_dashboard_page dashboard_page
-            return
-          else
-            if @team_list["#{required_team_name}"].nil?
-              puts "Sorry, I can\'t find #{required_team_name} in your teams.".red
-              return
-            end
-
-            switch_to_team_id @team_list["#{required_team_name}"]
-
-            @current_team = required_team_name
-            # process current team
-            Helper.log.info "Processing team: #{@current_team}".blue
-
-            process_dashboard_page @agent.get("https://testflightapp.com/dashboard/applications/")
-            return
-          end
+        # If we don't have any current team something went wrong with the authentication process
+        if (@current_team.text.empty?)
+          Helper.exit_with_error "Something went wrong during authentication process."
         end
 
-        # process current team
-        puts ""
-        Helper.log.info "This could take a while... ☕️".green #TODO every time it is working! And new line!
-        Helper.log.info "Processing team: #{@current_team}".blue
+        if (@team_list.count > 1)
 
-        process_dashboard_page dashboard_page
+          # We have multiple teams for current account hence we present a nice menu selection to the user
+          choose do |menu|
+            menu.prompt = "Please choose your team?  "
 
-        # process other teams
-        @team_list.each do |team_name, team_id|
-          switch_to_team_id team_id
-          @current_team = team_name
-          process_dashboard_page @agent.get("https://testflightapp.com/dashboard/applications/")
+            @team_list.each do |team_name, team_id|
+              menu.choice(team_name) do |choice|
+                process_teams false, choice
+              end
+            end
+
+            menu.choice("All teams") { process_teams true }
+          end
+        else
+          # process current team
+          puts ""
+          Helper.log.info "This could take a while... ☕️".green #TODO every time it is working! And new line!
+          Helper.log.info "Processing team: #{@current_team}".blue
+
+          process_dashboard_page dashboard_page
         end
 
       end
     end
 
-    def switch_to_team_id team_id
+    def process_teams process_all_teams, team_name=nil
+
+      if process_all_teams
+        # process current team
+        puts ""
+        Helper.log.info "This could take a while... ☕️".green #TODO every time it is working! And new line!
+        Helper.log.info "Processing team: #{@current_team}".blue
+
+        process_dashboard_page @dashboard_page
+
+        # process other teams
+        @team_list.each do |team_name, team_id|
+          switch_to_team_id team_id, team_name
+          process_dashboard_page @agent.get("https://testflightapp.com/dashboard/applications/")
+        end
+      else
+        if @current_team.eql? team_name
+          # process current team
+          Helper.log.info "Processing team: #{@current_team}".blue
+
+          process_dashboard_page @dashboard_page
+          return
+        else
+          if @team_list["#{team_name}"].nil?
+            Helper.exit_with_error "Sorry, I can\'t find #{team_name} in your teams.".red
+            return
+          end
+
+          switch_to_team_id @team_list["#{team_name}"], team_name
+
+          # process current team
+
+          process_dashboard_page @agent.get("https://testflightapp.com/dashboard/applications/")
+          return
+        end
+      end
+    end
+
+
+    def switch_to_team_id team_id, team_name
       team_switch = @dashboard_page.forms.first
       team_id_field = team_switch.field_with(:name => 'team')
       team_id_field.value = team_id
-      team_switch.submit
+
+      begin
+        team_switch.submit
+        @current_team = team_name
+        Helper.log.info "Processing team: #{@current_team}".blue
+      rescue Exception => e
+        Helper.exit_with_error e
+      end
+
+
     end
 
     def process_dashboard_page dashboard_page
