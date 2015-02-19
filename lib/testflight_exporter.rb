@@ -160,6 +160,11 @@ module TestFlightExporter
 
           @agent.get "https://testflightapp.com/dashboard/applications/#{$1}/builds/" do |builds_page|
 
+            # Processing app information to retrieve additional information on current application
+            app_information_link = builds_page.link_with(:text => "App Information")
+
+            process_app_information app_information_link.href
+
             # Collection of all pages for current build
             inner_pages = Array.new
 
@@ -187,6 +192,14 @@ module TestFlightExporter
 
           end
         end
+      end
+    end
+
+
+    def process_app_information app_information_page
+      @agent.get "https://testflightapp.com#{app_information_page}" do |app_information|
+        # Looking up the bundle identifier
+        @current_bundle_identifier = app_information.at("strong:contains('BundleID')").parent.parent.at("td").next.text
       end
     end
 
@@ -240,12 +253,12 @@ module TestFlightExporter
 
       FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
 
-      dirname = File.dirname("#{@path}/#{@current_team}/#{@app_name}")
+      dirname = File.dirname("#{@path}/#{@current_team}/#{@current_bundle_identifier}")
 
       FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
 
-      @agent.get(file_url).save("#{@path}/#{@current_team}/#{@app_name}/#{filename}")
-      File.open("#{@path}/#{@current_team}/#{@app_name}/#{$1}.txt", 'w') {|f| f.write(release_note) }
+      @agent.get(file_url).save("#{@path}/#{@current_team}/#{@current_bundle_identifier}/#{filename}")
+      File.open("#{@path}/#{@current_team}/#{@current_bundle_identifier}/#{$1}.txt", 'w') {|f| f.write(release_note) }
     end
   end
 end
