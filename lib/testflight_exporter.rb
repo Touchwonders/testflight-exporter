@@ -249,11 +249,11 @@ module TestFlightExporter
       file_url = "https://www.testflightapp.com#{link.href}"
       Helper.log.debug "Downloading #{file_url}...".magenta
 
-      dirname = File.dirname("#{@path}/#{@current_team} builds")
+      dirname = File.dirname("#{@path}/#{@current_team}")
 
       FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
 
-      dirname = File.dirname("#{@path}/#{@current_team} builds/#{@current_bundle_identifier} builds")
+      dirname = File.dirname("#{@path}/#{@current_team}/#{@current_bundle_identifier} builds")
 
       FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
 
