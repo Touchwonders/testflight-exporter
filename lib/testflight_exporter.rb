@@ -249,16 +249,16 @@ module TestFlightExporter
       file_url = "https://www.testflightapp.com#{link.href}"
       Helper.log.debug "Downloading #{file_url}...".magenta
 
-      dirname = File.dirname("#{@path}/#{@current_team}")
+      dirname = File.dirname("#{@path}/#{@current_team} builds")
 
       FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
 
-      dirname = File.dirname("#{@path}/#{@current_team}/#{@current_bundle_identifier}")
+      dirname = File.dirname("#{@path}/#{@current_team} builds/#{@current_bundle_identifier} builds")
 
       FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
 
-      @agent.get(file_url).save("#{@path}/#{@current_team}/#{@current_bundle_identifier}/#{filename}")
-      File.open("#{@path}/#{@current_team}/#{@current_bundle_identifier}/#{$1}.txt", 'w') {|f| f.write(release_note) }
+      @agent.get(file_url).save("#{@path}/#{@current_team}/#{@current_bundle_identifier} builds/#{filename}")
+      File.open("#{@path}/#{@current_team}/#{@current_bundle_identifier} builds/#{$1}.txt", 'w') {|f| f.write(release_note) }
     end
   end
 end
