@@ -1,15 +1,33 @@
-# Test Flight Exporter
-TL;DR: Test Flight Exporter is a simple CLI tool written in Ruby which helps you to download your TestFlight builds.
+# TestFlightExporter
+**TL;DR**: TestFlightExporter is a simple CLI tool that downloads archived builds from your TestFlightapp.com account.
 
-After so long distinguished service TestFlight is giving his last breathe, before becoming part of iTunes Connect platform, on February 26th.
-Test Flight Exporter has been developed in willing to cover an important missing gap in the transition to a new solution: download,
-on your local machine, all uploaded builds your account has access to.
+After years of faithful service, the original TestFlight is closing down on February 26th 2015. To ease the transition to a new beta distribution system, TestFlight provides a way to export existing teams and testers. A way to download your .ipa files, however, is lacking. That's where TestFlightExporter comes in!
+
+TestFlightExporter can download the builds, including release notes, from your account and stores them in a nice folder structure on your local machine.
 
 ## Installation
 
-If you are familiar with the command line and Ruby, install Test Flight exporter yourself:
+TestFlightExporter is available as a gem, which you can easily install by executing the following command in your terminal:
 
     $ gem install testflight_exporter
+
+## Usage
+
+TestFlightExporter is available as a simple CLI tool.
+You can invoke it by typing `tfexporter` on your terminal.
+
+Follow the setup assistent, which will configure the current TestFlightExporter run to your needs. All selected builds and release notes will be saved in a folder named `out`.
+
+**Warning**: Depending on the number of builds you have in your TestFlight account, TestFlightExporter could consume a lot of data/bandwidth.
+
+## How does this thing work?
+
+TestFlight doesn't provide any API to perform such task like exporting your .ipa's. TestFlightExporter uses [mechanize](https://github.com/sparklemotion/mechanize) to  automatically find and follow the download links on the TestFlight website.
+
+TestFlightExporter uses your credentials to access your TestFlight account (over https). Other than that, your credentials do not leave your machine.
+
+## Incorporating TestFlightExporter into your project
+If you want to use the functionality of TestFlightExporter directly rather than as a command-line tool, you can include it into your ruby product and use it from your code.
 
 To include it in your project, add this line to your application's Gemfile:
 
@@ -20,23 +38,6 @@ gem 'testflight_exporter'
 And then execute:
 
     $ bundle install
-
-## Usage
-
-Test Flight exporter is available as a simple CLI tool.
-You can invoke it by typing `tfexporter` on your terminal.
-
-Follow the setup assistent, which will tailor Test Flight exporter to your needs.
-
-## How does this thing work?
-
-Test Flight doesn't provide any API to perform such task like exporting your IPA.
-By using `mechanize` we made the access to Test Flight website automated:
-
-* Mechanize automatically stores and sends cookies, follows redirects, links and submit forms for you.
-* Testflight exporter process your input and interacts with Test Flight dashboard in order to accomplish his duty.
-
-Fire Test Flight Exporter and grab a coffee, it will do things for you.
 
 ## License
 
