@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'testflight_exporter/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "Test Flight Exporter"
+  spec.name          = "TestFlightExporter"
   spec.version       = Osiris::VERSION
   spec.authors       = ["Fabio Milano"]
   spec.email         = ["fabio@touchwonders.com"]

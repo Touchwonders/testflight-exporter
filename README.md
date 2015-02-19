@@ -9,7 +9,7 @@ TestFlight Exporter can download the builds, including release notes, from your 
 
 TestFlight Exporter is available as a gem, which you can easily install by executing the following command in your terminal:
 
-    $ gem install testflight_exporter
+    $ gem install TestFlightExporter
 
 ## Usage
 
@@ -32,7 +32,7 @@ If you want to use the functionality of TestFlight Exporter directly rather than
 To include it in your project, add this line to your application's Gemfile:
 
 ```ruby
-gem 'testflight_exporter'
+gem 'TestFlightExporter'
 ```
 
 And then execute:
