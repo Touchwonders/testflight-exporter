@@ -210,7 +210,7 @@ module TestFlightExporter
       build_pages.each do |build_id|
         @agent.get "https://testflightapp.com/dashboard/builds/complete/#{build_id.first}/" do |build_page|
           # Retrieve current app name
-          @app_name = page.at("h2").text
+          @current_app_name = page.at("h2").text
 
           process_build_page build_page
         end
@@ -230,9 +230,8 @@ module TestFlightExporter
     def process_install_page page
       # we need to figure out what kind of build is that
       release_note = page.search('.clearfix').at("p")
-
       if release_note.nil?
-        Helper.log.warn "No release note available for #{@current_build_number}".yellow
+        Helper.log.warn "No release note available for #{@current_app_name} #{@current_build_number}".yellow
       else
         release_note = release_note.text
         Helper.log.debug "RELEASE NOTE".magenta
