@@ -32,7 +32,9 @@ class TestFlightExporterApplication
       c.description = 'Helps you setting up all requirements to run a migration.'
 
       c.action do |args, options|
-        TestFlightExporter::Setup.new.setup
+        ENV['VERBOSE_MODE'] = 'true' if options.verbose
+
+        TestFlightExporter::Setup.new.setup(options.username, options.password, options.output)
       end
     end
 
