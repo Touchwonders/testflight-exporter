@@ -1,3 +1,3 @@
 module TestFlightExporter
-  VERSION = "0.1.0-stable"
+  VERSION = "0.1.1"
 end
