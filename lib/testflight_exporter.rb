@@ -86,7 +86,6 @@ module TestFlightExporter
           end
         else
           # process current team
-          puts ""
           Helper.log.info "This could take a while... ☕️".green
           Helper.log.info "Processing team: #{@current_team}".blue
 
@@ -100,7 +99,6 @@ module TestFlightExporter
 
       if process_all_teams
         # process current team
-        puts ""
         Helper.log.info "This could take a while... ☕️".green
         Helper.log.info "Processing team: #{@current_team}".blue
 
@@ -174,7 +172,6 @@ module TestFlightExporter
 
             number_of_pages = inner_pages.count + 1
             Helper.log.debug "Page 1 of #{number_of_pages}".magenta
-            puts ""
 
             # Process current build page
             process_builds_page builds_page
@@ -182,7 +179,6 @@ module TestFlightExporter
             # Cycle over remaning build pages
             i = 2
             inner_pages.each do |page|
-              puts ""
               Helper.log.debug "Page #{i} of #{number_of_pages}".magenta
 
               process_builds_page @agent.get "https://testflightapp.com#{page}"
@@ -247,8 +243,6 @@ module TestFlightExporter
       else
         download_build(ipa_link, "ipa", release_note)
       end
-
-      puts ""
     end
 
     def download_build link, file_ext, release_note
