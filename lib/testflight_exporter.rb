@@ -39,7 +39,7 @@ module TestFlightExporter
     def process_login_page page
 
       # Init login process
-      Helper.log.debug 'Login...'.yellow
+      Helper.log.info 'Login...'.green
 
       login_form = page.forms.first # by pretty printing the page this is safe catch
 
@@ -229,10 +229,16 @@ module TestFlightExporter
 
     def process_install_page page
       # we need to figure out what kind of build is that
-      release_note = page.search('.clearfix').at("p").text
+      release_note = page.search('.clearfix').at("p")
 
-      Helper.log.debug "RELEASE NOTE".magenta
-      Helper.log.debug release_note.magenta
+      if release_note.nil?
+        Helper.log.warn "No release note available for #{@current_build_number}".yellow
+      else
+        release_note = release_note.text
+        Helper.log.debug "RELEASE NOTE".magenta
+        Helper.log.debug release_note.magenta
+      end
+
 
       ipa_link = page.link_with(:text => "download the IPA.")
       ipa_link = page.link_with(:text => "download the IPA") if ipa_link.nil?
@@ -263,7 +269,7 @@ module TestFlightExporter
       FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
 
       @agent.get(file_url).save("#{@path}/#{@current_team}/#{@current_bundle_identifier} builds/#{filename}")
-      File.open("#{@path}/#{@current_team}/#{@current_bundle_identifier} builds/#{$1}.txt", 'w') {|f| f.write(release_note) }
+      File.open("#{@path}/#{@current_team}/#{@current_bundle_identifier} builds/#{$1}.txt", 'w') {|f| f.write(release_note) } unless release_note.nil?
     end
   end
 end
