@@ -6,6 +6,7 @@ require 'commander'
 require 'highline'
 require_relative '../lib/testflight_exporter/version'
 require_relative '../lib/testflight_exporter'
+require_relative '../lib/hockeyapp_uploader'
 
 HighLine.track_eof = false
 
@@ -28,14 +29,27 @@ class TestFlightExporterApplication
 
     always_trace!
 
-    command :migrate do |c|
+    command :dump do |c|
       c.syntax = 'tfexporter migrate'
-      c.description = 'Helps you setting up all requirements to run a migration.'
+      c.description = 'Download your binaries from TestFlightapp.com'
 
       c.action do |args, options|
         ENV['VERBOSE_MODE'] = 'true' if options.verbose
 
         TestFlightExporter::Setup.new.setup(options.username, options.password, options.output, options.team)
+      end
+    end
+
+    command :hockeyapp do |c|
+      c.syntax = 'tfexporter hockeyapp'
+      c.description = 'Helps you setting up all requirements to run a migration.'
+      c.option '--token STRING', String, 'Your hockey app token'
+      c.option '--input STRING', String, 'Your binaries folder'
+
+      c.action do |args, options|
+        ENV['VERBOSE_MODE'] = 'true' if options.verbose
+
+        TestFlightExporter::HockeyAppUploader.new.run(options.token, options.input)
       end
     end
 
