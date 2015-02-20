@@ -15,9 +15,10 @@ module TestFlightExporter
       @team_list = Hash.new
     end
 
-    def setup (username=nil, password=nil, output_folder=nil)
+    def setup (username=nil, password=nil, output_folder=nil, team=nil)
       @username = username
       @password = password
+      @team = team
       @path = output_folder
       @username = ask("Enter your TestFlight username:  ") { |q| q.echo = true } if @username.nil?
       @password = ask("Enter your TestFlight password:  ") { |q| q.echo = "*" } if @password.nil?
@@ -70,11 +71,20 @@ module TestFlightExporter
           Helper.exit_with_error "Something went wrong during authentication process."
         end
 
+        unless @team.nil?
+          process_teams false, @team
+          return
+        end
+
         if (@team_list.count > 1)
 
           # We have multiple teams for current account hence we present a nice menu selection to the user
           choose do |menu|
             menu.prompt = "Please choose your team?  "
+
+            menu.choice(@current_team.to_s) do |choice|
+              process_teams false, choice
+            end
 
             @team_list.each do |team_name, team_id|
               menu.choice(team_name) do |choice|
@@ -110,7 +120,7 @@ module TestFlightExporter
           process_dashboard_page @agent.get("https://testflightapp.com/dashboard/applications/")
         end
       else
-        if @current_team.eql? team_name
+        if @current_team.to_s == team_name
           # process current team
           Helper.log.info "Processing team: #{@current_team}".blue
 
