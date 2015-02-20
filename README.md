@@ -25,7 +25,11 @@ Follow the setup assistent, which will configure the current TestFlight Exporter
 Like all the CLI tool TestFlight Exporter comes with global options that you can use to fire the tool and take a break for a good coffee :coffee: .
 Launch TestFlight exporter with `--help` option to have a quick overview about all of them.
 
-**Warning**: Depending on the number of builds you have in your TestFlight account, TestFlight Exporter could consume a lot of data/bandwidth.
+**Warning**: Depending on the number of builds you have in your TestFlight account, TestFlight Exporter could consume a lot of data/bandwidth. Use
+
+    $ tfexplorer --max [MAX_NUMBER]
+
+to limit number of downloaded binaries per build.
 
 ### HockeyApp integration
 
