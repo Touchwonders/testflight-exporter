@@ -20,6 +20,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'highline', '~> 1.6' # user inputs (e.g. passwords)
   spec.add_dependency 'colored' # coloured terminal output
   spec.add_dependency 'commander', '~> 4.2' # CLI parser
+  spec.add_dependency 'shenzhen' # IPA Distribution
 
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "rake", "~> 10.0"
