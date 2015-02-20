@@ -54,7 +54,7 @@ class TestFlightExporterApplication
       end
     end
 
-    default_command :migrate
+    default_command :dump
 
     run!
   end
