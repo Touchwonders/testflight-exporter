@@ -7,6 +7,7 @@ require 'highline'
 require_relative '../lib/testflight_exporter/version'
 require_relative '../lib/testflight_exporter'
 require_relative '../lib/hockeyapp_uploader'
+require_relative '../lib/deploygate_uploader'
 
 HighLine.track_eof = false
 
@@ -52,6 +53,20 @@ class TestFlightExporterApplication
         ENV['VERBOSE_MODE'] = 'true' if options.verbose
 
         TestFlightExporter::HockeyAppUploader.new.run(options.token, options.input, options.teams)
+      end
+    end
+
+    command :deploygate do |c|
+      c.syntax = 'tfexporter deploygate'
+      c.description = 'Upload your binaries to DeployGate platform (API TOKEN and USERNAME required).'
+      c.option '--token STRING', String, 'Your hockey app token'
+      c.option '--input FOLDER', String, 'Your binaries folder'
+      c.option '--username STRING', String, "Your deploygate username"
+
+      c.action do |args, options|
+        ENV['VERBOSE_MODE'] = 'true' if options.verbose
+
+        TestFlightExporter::DeployGateUploader.run(options)
       end
     end
 
