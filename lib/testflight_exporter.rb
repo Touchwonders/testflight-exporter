@@ -20,7 +20,7 @@ module TestFlightExporter
       @username = options.username
       @password = options.password
       @team = options.team
-      @path = options.output_folder
+      @path = options.output
       @max = options.max
       @username = ask("Enter your TestFlight username:  ") { |q| q.echo = true } if @username.nil?
       @password = ask("Enter your TestFlight password:  ") { |q| q.echo = "*" } if @password.nil?
