@@ -15,13 +15,13 @@ module TestFlightExporter
       @team_list = Hash.new
     end
 
-    def setup
-      "Welcome to Osiris Migration Tool."
-      puts "Before we start I need some information about your TestFlight account."
-
-      @username = ask("Enter your TestFlight username:  ") { |q| q.echo = true }
-      @password = ask("Enter your TestFlight password:  ") { |q| q.echo = "*" }
-      @path = ask("Enter your output folder where all the IPAs will be downloaded:  "){ |q| q.echo = true }
+    def setup (username=nil, password=nil, output_folder=nil)
+      @username = username
+      @password = password
+      @path = output_folder
+      @username = ask("Enter your TestFlight username:  ") { |q| q.echo = true } if @username.nil?
+      @password = ask("Enter your TestFlight password:  ") { |q| q.echo = "*" } if @password.nil?
+      @path = ask("Enter your output folder where all the IPAs will be downloaded:  "){ |q| q.echo = true } if @path.nil?
 
       # Validate ouput folder
       if File.directory?(@path)
