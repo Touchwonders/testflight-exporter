@@ -28,15 +28,16 @@ class TestFlightExporterApplication
     command :dump do |c|
       c.syntax = 'tfexporter migrate'
       c.description = 'Download your binaries from TestFlightapp.com'
-      c.option '--username STRING', String, 'Your testflight account username'
-      c.option '--password STRING', String, 'Your testflight account password'
-      c.option '--output FOLDER', String, 'Path to your output folder where your binaries will be downloaded'
-      c.option '--team TEAM', String, 'TestFlight team name to process'
+      c.option '--username  STRING', String, 'Your testflight account username'
+      c.option '--password  STRING', String, 'Your testflight account password'
+      c.option '--output    FOLDER', String, 'Path to your output folder where your binaries will be downloaded'
+      c.option '--team      TEAM', String, 'TestFlight team name to process'
+      c.option '--max       MAX', Integer, 'Max number of binaries per build to download (from latest binary to the oldest).'
 
       c.action do |args, options|
         ENV['VERBOSE_MODE'] = 'true' if options.verbose
 
-        TestFlightExporter::Setup.new.setup(options.username, options.password, options.output, options.team)
+        TestFlightExporter::Setup.new.setup(options)
       end
     end
 
