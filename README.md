@@ -20,7 +20,10 @@ TestFlight Exporter is available as a gem, which you can easily install by execu
 TestFlight Exporter is available as a simple CLI tool.
 You can invoke it by typing `tfexporter` on your terminal.
 
-Follow the setup assistent, which will configure the current TestFlight Exporter run to your needs. All selected builds and release notes will be saved in a folder named `out`.
+Follow the setup assistent, which will configure the current TestFlight Exporter run to your needs. All selected builds and release notes will be saved in output folder specified by you.
+
+Like all the CLI tool TestFlight Exporter comes with global options that you can use to fire the tool and take a break for a good coffee :coffee: .
+Launch TestFlight exporter with `--help` option to have a quick overview about all of them.
 
 **Warning**: Depending on the number of builds you have in your TestFlight account, TestFlight Exporter could consume a lot of data/bandwidth.
 
@@ -45,13 +48,17 @@ And then execute:
 
 ## Credits
 
-TestFlight exporter is created by me, [Fabio Milano](https://twitter.com/fabiom_milano). I am an iOS Engineer at [Touchwonders](http://www.touchwonders.com/), a mobile agency placed in Utrecht, Netherlands.
+TestFlight exporter is created by me, [Fabio Milano](https://twitter.com/fabiom_milano). I am an iOS Engineer at [Touchwonders](http://www.touchwonders.com/),
+a mobile app agency based in the Netherlands .
 
-At Touchwonders, we have been using TestFlightapp.com for the past few years to share the latest builds with our clients and to distribute Betas for [Highstreet](http://www.highstreetapp.com).
-I created TestFlight exporter because I wanted to improve our migration process on other platforms by making it fast, simple to use and highly configurable.
-TestFlightapp services will shutdown next week but I'm working on keep this tool up to date with your features request and bugs-free.
+At Touchwonders, we have been using TestFlightapp.com for the past few years to share the latest builds with our clients and to distribute Betas for [Highstreetapp](http://www.highstreetapp.com).
 
-Thanks for your contributions.
+My goal was to create a script to export your app binaries in a fast and simple way, I hope you like it.
+
+We'd like to thank the TestFlight team for their efforts – we were happy users of their services.
+TestFlight will shutdown next week but I will maintain it until the shutdown.
+
+Follow us on twitter @touchwonders and let me know what you think!
 
 ## License
 
