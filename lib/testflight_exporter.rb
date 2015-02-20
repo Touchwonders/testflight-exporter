@@ -218,6 +218,11 @@ module TestFlightExporter
     end
 
     def process_build_page page
+
+      # Get build information []i.e. Build 1.0 (1)]
+      build_str = page.search('.vert-nav').search('.anchor').text
+      @current_build_number = build_str.gsub!(/.*?(?=Build)/im, "")
+
       build_link = page.links_with(:dom_class => 'bitly').first
       @agent.get("https://www.testflightapp.com#{build_link.href}") { |install_page| process_install_page install_page}
     end
