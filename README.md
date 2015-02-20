@@ -1,5 +1,5 @@
 <h3 align="center">
-  <img src="assets/tw_logo.png" alt="touchwonders Logo" />
+  <a href="http://www.touchwonders.com"><img src="assets/tw_logo.png" alt="Touchwonders Logo" style="width:35%;"/></a>
 </h3>
 
 # TestFlight Exporter
