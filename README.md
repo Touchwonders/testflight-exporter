@@ -1,3 +1,7 @@
+<h3 align="center">
+  <img src="assets/tw_logo.png" alt="touchwonders Logo" />
+</h3>
+
 # TestFlight Exporter
 **TL;DR**: TestFlight Exporter is a simple CLI tool that downloads archived builds from your TestFlightapp.com account.
 
@@ -38,6 +42,16 @@ gem 'TestFlightExporter'
 And then execute:
 
     $ bundle install
+
+## Credits
+
+TestFlight exporter is created by me, [Fabio Milano](https://twitter.com/fabiom_milano). I am an iOS Engineer at [Touchwonders](http://www.touchwonders.com/), a mobile agency placed in Utrecht, Netherlands.
+
+At Touchwonders, we have been using TestFlightapp.com for the past few years to share the latest builds with our clients and to distribute Betas for [Highstreet](http://www.highstreetapp.com).
+I created TestFlight exporter because I wanted to improve our migration process on other platforms by making it fast, simple to use and highly configurable.
+TestFlightapp services will shutdown next week but I'm working on keep this tool up to date with your features request and bugs-free.
+
+Thanks for your contributions.
 
 ## License
 
