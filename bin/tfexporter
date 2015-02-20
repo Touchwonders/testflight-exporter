@@ -24,8 +24,8 @@ class TestFlightExporterApplication
     global_option '--verbose'
     global_option '--username STRING', String, 'Your testflight account username'
     global_option '--password STRING', String, 'Your testflight account password'
-    global_option '--output STRING', String, 'Path to your output folder where your binaries will be downloaded'
-    global_option '--team STRING', String, 'Team name to process'
+    global_option '--output FOLDER', String, 'Path to your output folder where your binaries will be downloaded'
+    global_option '--team TEAM', String, 'TestFlight team name to process'
 
     always_trace!
 
@@ -42,14 +42,15 @@ class TestFlightExporterApplication
 
     command :hockeyapp do |c|
       c.syntax = 'tfexporter hockeyapp'
-      c.description = 'Helps you setting up all requirements to run a migration.'
+      c.description = 'Upload your binaries to Hockeyapp platform (API TOKEN required).'
       c.option '--token STRING', String, 'Your hockey app token'
-      c.option '--input STRING', String, 'Your binaries folder'
+      c.option '--input FOLDER', String, 'Your binaries folder'
+      c.option '--teams TEAMS', "Comma separated list of team ID numbers to which this build will be restricted"
 
       c.action do |args, options|
         ENV['VERBOSE_MODE'] = 'true' if options.verbose
 
-        TestFlightExporter::HockeyAppUploader.new.run(options.token, options.input)
+        TestFlightExporter::HockeyAppUploader.new.run(options.token, options.input, options.teams)
       end
     end
 
