@@ -24,7 +24,7 @@ class TestFlightExporterApplication
     global_option '--username STRING', String, 'Your testflight account username'
     global_option '--password STRING', String, 'Your testflight account password'
     global_option '--output STRING', String, 'Path to your output folder where your IPAs will be downloaded'
-    global_option '--team STRING', String, 'Team name from where you want to download your builds'
+    global_option '--team STRING', String, 'Team name to process'
 
     always_trace!
 
