@@ -54,7 +54,7 @@ class TestFlightExporterApplication
       end
     end
 
-    default_command :dump
+    default_command :help
 
     run!
   end
