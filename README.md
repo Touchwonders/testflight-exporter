@@ -27,9 +27,9 @@ Launch TestFlight exporter with `--help` option to have a quick overview about a
 
 **Warning**: Depending on the number of builds you have in your TestFlight account, TestFlight Exporter could consume a lot of data/bandwidth.
 
-### Hockey app integration
+### HockeyApp integration
 
-Since version 0.2.0 TestFlight exporter supports the upload of your downloaded binaries on Hockeyapp platform.
+Since version 0.2.0 TestFlight exporter supports the upload of your downloaded binaries on HockeyApp platform.
 Execute the following command in your terminal:
 
     $ tfexporter hockeyapp --token [YOUR_API_TOKEN] --input [YOUR_BINARIES_PATH]
