@@ -14,7 +14,7 @@ class TestFlightExporterApplication
   include Commander::Methods
 
   def run
-    program :version, Osiris::VERSION
+    program :version, TestFlightExporter::VERSION
     program :description, 'CLI for \'Test Flight Exporter\' - Export your app binaries from Testflightapp.com in a fast and simple way'
     program :help, 'Author', 'Fabio Milano'
     program :help, 'Website', 'http://www.touchwonders.com'
