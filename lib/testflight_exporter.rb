@@ -13,13 +13,15 @@ module TestFlightExporter
     def initialize
       @agent = Mechanize.new
       @team_list = Hash.new
+      @downloaded_binaries = 0
     end
 
-    def setup (username=nil, password=nil, output_folder=nil, team=nil)
-      @username = username
-      @password = password
-      @team = team
-      @path = output_folder
+    def setup (options)
+      @username = options.username
+      @password = options.password
+      @team = options.team
+      @path = options.output_folder
+      @max = options.max
       @username = ask("Enter your TestFlight username:  ") { |q| q.echo = true } if @username.nil?
       @password = ask("Enter your TestFlight password:  ") { |q| q.echo = "*" } if @password.nil?
       @path = ask("Enter your output folder where all the IPAs will be downloaded:  "){ |q| q.echo = true } if @path.nil?
@@ -28,7 +30,6 @@ module TestFlightExporter
       if File.directory?(@path)
         # The in input path already exist we prefer to fail instead of using overriding policies
         Helper.exit_with_error "\"#{@path}\" is an existing directory. Please specify another output folder".red
-        return
       end
 
       # Initialize Test Flight login page
@@ -73,7 +74,7 @@ module TestFlightExporter
 
         unless @team.nil?
           process_teams false, @team
-          return
+          exit_by_print_success_builds_no
         end
 
         if (@team_list.count > 1)
@@ -125,11 +126,10 @@ module TestFlightExporter
           Helper.log.info "Processing team: #{@current_team}".blue
 
           process_dashboard_page @dashboard_page
-          return
+          exit_by_print_success_builds_no
         else
           if @team_list["#{team_name}"].nil?
             Helper.exit_with_error "Sorry, I can\'t find #{team_name} in your teams.".red
-            return
           end
 
           switch_to_team_id @team_list["#{team_name}"], team_name
@@ -137,7 +137,7 @@ module TestFlightExporter
           # process current team
 
           process_dashboard_page @agent.get("https://testflightapp.com/dashboard/applications/")
-          return
+          exit_by_print_success_builds_no
         end
       end
     end
@@ -165,6 +165,7 @@ module TestFlightExporter
         link.href =~ app_link_pattern
         if $1 != nil
           Helper.log.debug "Builds page for #{$1}...".magenta
+          @build_downloaded_binaries = 0
 
           @agent.get "https://testflightapp.com/dashboard/applications/#{$1}/builds/" do |builds_page|
 
@@ -189,6 +190,7 @@ module TestFlightExporter
             # Cycle over remaning build pages
             i = 2
             inner_pages.each do |page|
+              break if (!@max.nil? && @build_downloaded_binaries == @max)
               Helper.log.debug "Page #{i} of #{number_of_pages}".magenta
 
               process_builds_page @agent.get "https://testflightapp.com#{page}"
@@ -214,6 +216,10 @@ module TestFlightExporter
       build_pages = body.scan /<tr class="goversion pointer" id="\/dashboard\/builds\/report\/(.*?)\/">/
 
       build_pages.each do |build_id|
+        unless @max.nil?
+          break  if @build_downloaded_binaries == @max
+        end
+
         @agent.get "https://testflightapp.com/dashboard/builds/complete/#{build_id.first}/" do |build_page|
           # Retrieve current app name
           @current_app_name = page.at("h2").text
@@ -272,7 +278,18 @@ module TestFlightExporter
       FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
 
       @agent.get(file_url).save("#{@path}/#{@current_team}/#{@current_bundle_identifier} builds/#{filename}")
-      File.open("#{@path}/#{@current_team}/#{@current_bundle_identifier} builds/#{$1}.txt", 'w') {|f| f.write(release_note) } unless release_note.nil?
+
+      if File.file?("#{@path}/#{@current_team}/#{@current_bundle_identifier} builds/#{filename}")
+        @downloaded_binaries = @downloaded_binaries + 1
+        @build_downloaded_binaries = @build_downloaded_binaries + 1
+        File.open("#{@path}/#{@current_team}/#{@current_bundle_identifier} builds/#{$1}.txt", 'w') {|f| f.write(release_note) } unless release_note.nil?
+      end
+    end
+
+    def exit_by_print_success_builds_no
+      Helper.log.info "#{@downloaded_binaries} binaries have been successfully downloaded! ".green unless @downloaded_binaries==0
+      Helper.log.info "Thanks for using our tool. Hoped you liked it. Please don't forget to share it ;)".cyan
+      exit
     end
   end
 end
