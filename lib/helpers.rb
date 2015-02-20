@@ -14,7 +14,7 @@ module TestFlightExporter
 
     # Logging happens using this method
     def self.log
-        @@log ||= Logger.new(STDOUT)
+      @@log ||= Logger.new(STDOUT)
 
       @@log.formatter = proc do |severity, datetime, progname, msg|
         string = "#{severity} [#{datetime.strftime('%Y-%m-%d %H:%M:%S.%2N')}]: "
@@ -36,7 +36,14 @@ module TestFlightExporter
         [string, second].join("")
       end
 
+      @@log.level = Logger::INFO
+      @@log.level = Logger::DEBUG if is_log_verbose?
+
       @@log
+    end
+
+    def self.is_log_verbose?
+      ENV['VERBOSE_MODE']
     end
 
     # EXIT HANDLERS
