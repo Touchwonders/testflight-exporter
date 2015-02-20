@@ -1,3 +1,3 @@
-module Osiris
-  VERSION = "0.0.3"
+module TestFlightExporter
+  VERSION = "0.1.0"
 end

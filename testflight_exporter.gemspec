@@ -5,10 +5,10 @@ require 'testflight_exporter/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "TestFlightExporter"
-  spec.version       = Osiris::VERSION
+  spec.version       = TestFlightExporter::VERSION
   spec.authors       = ["Fabio Milano"]
   spec.email         = ["fabio@touchwonders.com"]
-  spec.summary       = %q{A simple tool that helps you migrating your TestFlight build to your local environment}
+  spec.summary       = %q{A simple tool that helps you migrating your TestFlight binaries to your local environment}
   spec.homepage      = ""
   spec.license       = "MIT"
 
