@@ -30,6 +30,8 @@ module TestFlightExporter
 
       Helper.log.info "Uploadind binaries to Hockeyapp platform... this could take some time.".blue
 
+      number_of_builds = 0
+
       Dir.glob("#{directory}/**/*.ipa") { |filename|
 
         Helper.log.debug "Starting with #{filename} upload to HockeyApp...".magenta
@@ -48,12 +50,14 @@ module TestFlightExporter
 
             Helper.log.debug"Public Download URL: #{url}".white if url
             Helper.log.debug "Build successfully uploaded to HockeyApp!".green
+            number_of_builds = number_of_builds + 1
           else
             Helper.log.error "Error uploading to HockeyApp: #{response.body}"
             Helper.exit_with_error "Error when trying to upload ipa to HockeyApp".red
         end
       }
-    end
 
+      Helper.log.info "Uploaded #{number_of_builds} binaries on Hockeyapp platform!".blue
+    end
   end
 end
