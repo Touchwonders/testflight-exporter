@@ -288,7 +288,7 @@ module TestFlightExporter
 
     def exit_by_print_success_builds_no
       Helper.log.info "#{@downloaded_binaries} binaries have been successfully downloaded! ".green unless @downloaded_binaries==0
-      Helper.log.info "Thanks for using our tool. Hoped you liked it. Please don't forget to share it ;)".cyan
+      Helper.log.info "Thanks for using our tool. Hope you liked it. Please don't forget to share it ;)".cyan
       exit
     end
   end
