@@ -43,6 +43,18 @@ To get a list of available options, execute:
 
     $ tfexporter hockeyapp --help
 
+### DeployGate integration
+
+Since version 0.2.2 TestFlight exporter supports the upload of your downloaded binaries on DeployGate platform.
+Execute the following command in your terminal:
+
+    $ tfexporter deploygate --username [YOUR_USERNAME] --token [YOUR_API_TOKEN] --input [YOUR_BINARIES_PATH]
+
+
+To get a list of available options, execute:
+
+    $ tfexporter deploygate --help
+
 ## How does this thing work?
 
 TestFlight doesn't provide any API to perform such task like exporting your .ipa's. TestFlight Exporter uses [mechanize](https://github.com/sparklemotion/mechanize) to  automatically find and follow the download links on the TestFlight website.
