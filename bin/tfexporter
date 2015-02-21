@@ -59,7 +59,7 @@ class TestFlightExporterApplication
     command :deploygate do |c|
       c.syntax = 'tfexporter deploygate'
       c.description = 'Upload your binaries to DeployGate platform (API TOKEN and USERNAME required).'
-      c.option '--token STRING', String, 'Your hockey app token'
+      c.option '--token STRING', String, 'Your DeployGate token'
       c.option '--input FOLDER', String, 'Your binaries folder'
       c.option '--username STRING', String, "Your deploygate username"
 
