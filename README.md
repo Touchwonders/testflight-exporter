@@ -27,7 +27,7 @@ Launch TestFlight exporter with `--help` option to have a quick overview about a
 
 **Warning**: Depending on the number of builds you have in your TestFlight account, TestFlight Exporter could consume a lot of data/bandwidth. Use
 
-    $ tfexplorer --max [MAX_NUMBER]
+    $ tfexporter dump --max [MAX_NUMBER]
 
 to limit number of downloaded binaries per build.
 
